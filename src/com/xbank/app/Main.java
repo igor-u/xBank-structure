@@ -22,28 +22,32 @@ public class Main {
 		Conta conta1 = new ContaCorrente(123);
 		Conta conta2 = new ContaCorrente(321);
 		conta1.setNomeAgencia("Itau");
-		conta2.setNomeAgencia("Santander");
+		conta2.setNomeAgencia("Nubank");
 		
 		//Cria usuarios
 		Usuario user1 = new UsuarioPessoaBuilder().comNomeCompleto("Joao").build();
 		Usuario user2 = new UsuarioPessoaBuilder().comNomeCompleto("Maria").build();
-		user1.getContas().add(conta1);
-		user2.getContas().add(conta2);
-		
-		//Ambas as contas com saldo de 100
-		conta1.setSaldo(BigDecimal.valueOf(100));
-		conta2.setSaldo(BigDecimal.valueOf(100));
 		
 		UsuarioController userController = UsuarioController.getInstance(UsuarioRepositoryInMemoryImpl.getInstance());
-		userController.inserir(user1);
-		userController.inserir(user2);
 
-		//Cria servico de conta poupanca
+		userController.vincularConta(user1, conta1);
+		userController.vincularConta(user2, conta2);
+
+		//Cria servico de conta corrente
 		ContaCorrenteService ccService = ContaCorrenteService.getInstance(ContaCorrenteOperationImpl.getInstance());
-		
+
 		//Cria params
 		Map<String, Object> params = new HashMap<>();
-		
+
+		//Deposita 100 (tipo da moeda) em ambas as contas
+		params.put("valor", BigDecimal.valueOf(100));
+		params.put("conta", conta1);
+		ccService.executar(OperacoesContaCorrente.DEPOSITAR, params);
+
+		params.put("valor", BigDecimal.valueOf(100));
+		params.put("conta", conta2);
+		ccService.executar(OperacoesContaCorrente.DEPOSITAR, params);
+
 		//Define valor da transferencia
 		BigDecimal valorTransferencia = BigDecimal.valueOf(50);
 		
@@ -59,9 +63,12 @@ public class Main {
 		System.out.println(conta1.getSaldo());
 		//Saldo final da conta2
 		System.out.println(conta2.getSaldo());
-		
-		userController.listarUsuarios();
 
+		//Insere users no repositorio
+		userController.inserir(user1);
+		userController.inserir(user2);
+
+		userController.listarUsuarios();
 
 	}
 

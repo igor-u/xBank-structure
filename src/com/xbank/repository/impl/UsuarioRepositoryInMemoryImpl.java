@@ -40,7 +40,12 @@ public class UsuarioRepositoryInMemoryImpl implements UsuarioRepository {
 	}
 
 	@Override
-	public void excluirConta(Usuario user, long numeroConta) {
+	public void vincularConta(Usuario user, Conta conta) {
+		user.getContas().add(conta);
+	}
+
+	@Override
+	public void desvincularConta(Usuario user, long numeroConta) {
 		for(Conta conta : user.getContas()) {
 			if (conta.getNumeroConta() == numeroConta) {
 				user.getContas().remove(conta);

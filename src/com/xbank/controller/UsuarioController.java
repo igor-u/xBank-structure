@@ -1,5 +1,6 @@
 package com.xbank.controller;
 
+import com.xbank.model.conta.Conta;
 import com.xbank.model.usuario.Usuario;
 import com.xbank.repository.UsuarioRepository;
 
@@ -27,9 +28,11 @@ public class UsuarioController {
 	public void excluir(Usuario user) {
 		repository.excluir(user);
 	}
-	
-	public void excluirConta(Usuario user, long numeroConta) {
-		repository.excluirConta(user, numeroConta);
+
+	public void vincularConta(Usuario user, Conta conta) { repository.vincularConta(user, conta); }
+
+	public void desvincularConta(Usuario user, long numeroConta) {
+		repository.desvincularConta(user, numeroConta);
 	}
 
 	public void listarUsuarios() {

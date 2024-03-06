@@ -13,7 +13,7 @@ public abstract class Usuario {
 	public String contasToString() {
 		StringJoiner contasString = new StringJoiner(", ");
 		for (Conta conta : contas) {
-			contasString.add(conta.getNumeroConta() + ": " + conta.getNomeAgencia());
+			contasString.add(conta.getNumeroConta() + " - " + conta.getNomeAgencia() + ";") ;
 		}
 		return contasString.toString();
 	}
